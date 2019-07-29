@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>
+            Index
+        </title>
+        <style>
+           body{ 
+            padding:15px;
+            background-color:dodgerblue;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+           }
+           #header1{
+               padding:10px;
+               font-size:40px;
+               border:2px solid black;
+               width:250px;
+           }
+           ul{
+               width:250px;
+               padding-left:0;
+           }
+           li{
+               color:darkgreen;
+               background-color:darkseagreen;
+               padding:15px;
+               margin-bottom:15px;
+               border-radius:5px;
+           }
+        </style>
+    </head>
+    <body>
+            <h1 id="header1">Todo List</h1>
+            <form>
+                <input type="text" id="user-todo" placeholder="New Todo" required/>    
+            </form>
+            <h2 id="todo-header">Todos</h2>
+            <ul>
+
+            </ul>
+            <button id="clear">clear all</button> 
+            <script>
+                var form=document.querySelector('form');
+                var todoList=document.querySelector('ul');
+                var button = document.querySelector('button');
+                var input=document.getElementById('user-todo');
+                var todoArray=localStorage.getItem('todos')?JSON.parse(localStorage.getItem('todos')):[];
+                localStorage.setItem('todos',JSON.stringify(todoArray));
+
+                var storage=JSON.parse(localStorage.getItem('todos'));
+                
+                form.addEventListener('submit',(e)=>{
+                    
+                    e.preventDefault();
+                    todoArray.push(input.value);
+                    localStorage.setItem('todos',JSON.stringify(todoArray));
+                    todoMaker(input.value);
+                    input.value='';
+                });
+                var todoMaker=(text)=>{
+                    var todo=document.createElement('li');
+                    todo.textContent=text;
+                    todoList.appendChild(todo);
+                };
+                for(var i=0;i<storage.length;i++){
+                    todoMaker(storage[i]);
+                }
+                button.addEventListener('click',()=>{
+                    while(todoList.firstChild){
+                        todoList.removeChild(todoList.firstChild);
+                    }
+                });
+            </script>    
+    </body>
+</html>
+
